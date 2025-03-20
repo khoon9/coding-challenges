@@ -36,21 +36,36 @@ package skillladder.level21_recursion;
 import java.util.*;
 
 public class P11729 {
+    // 첫 번째 장대에서 세 번째 장대로 옮긴다.
+    // 한 개의 원판씩 옮길 수 있다.
+    // 항상 크기가 큰 개 아래에 가야한다.
+    // 이동이 최소가 되도록하는 이동 순서를 구한다.
+    // 목표:  "이동 횟수"와 "이동 순서" 구하기
+    private static int targetCnt = 0;
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
         StringBuilder sb = new StringBuilder();
 
         int N = scanner.nextInt();
-        sb.append(function1(N));
+        function1(N, sb, 1, 3, 2);
 
+        System.out.println(targetCnt);
         System.out.println(sb);
     }
-    public static int function1(int N){
-        if (N==1){
-            return 1;
-        } else if(N==0){
-            return 0;
+    // 원판이 1개 남은 경우와 원판이 2개 이상 남은 경우를 나누어 계산
+    // 이때, 2개 이상 남은 경우에 대해선
+    // 가장 큰 원판을 제외한 나머지 원판을 먼저 보조 기둥으로 옮기고
+    // 가장 큰 원판을 목적지에 이동
+    // 이후 보조 기둥으로 옮겼던 원판(들)을 목적지로 이동
+    public static void function1(int n, StringBuilder sb, int from, int to, int aux) {
+        if (n==1){
+            targetCnt++;
+            sb.append(from+" "+to+"\n");
+            return;
         }
-        return function1(N-1) + function1(N-2);
+        function1(n-1, sb, from, aux, to);
+        targetCnt++;
+        sb.append(from+" "+to+"\n");
+        function1(n-1, sb, aux, to, from);
     }
 }
